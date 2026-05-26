@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Porra Mundial 2026 · Padel Team Gourmet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700&family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* === Design System PTG (DS 04.8) === */
+  :root {
+    --color-paper:        #F4EFE1;
+    --color-paper-light:  #FBF9F4;
+    --color-paper-deep:   #E4DCC7;
+    --color-paper-deeper: #D6CCB4;
+    --color-ink:          #0E1618;
+    --color-ink-soft:     #243034;
+    --color-ash:          #7B7565;
+    --color-fog:          #C2B9A4;
+    --color-court:        #2A5D47;
+    --color-court-deep:   #1E4434;
+    --color-ball:         #CEDB4A;
+    --color-error:        #C63D2F;
+
+    --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+    --font-ui:      'Geist', -apple-system, system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-ui);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* === Court motif (pista al ~12% sobre paper) ===
+     Líneas de pista de pádel como tile repetido sutil. */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200' fill='none' stroke='%232A5D47' stroke-width='1' stroke-opacity='0.06'%3E%3Crect x='10' y='10' width='380' height='180'/%3E%3Cline x1='200' y1='10' x2='200' y2='190'/%3E%3Cline x1='10' y1='100' x2='390' y2='100'/%3E%3Cline x1='70' y1='10' x2='70' y2='190'/%3E%3Cline x1='330' y1='10' x2='330' y2='190'/%3E%3C/svg%3E");
+    background-size: 800px 400px;
+    background-position: center top;
+    background-repeat: repeat;
+    opacity: 1;
+    animation: motif-fade 800ms ease-out;
+  }
+
+  @keyframes motif-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* === Layout === */
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+  }
+
+  /* === Header === */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 32px;
+    background: var(--color-court);
+    color: var(--color-paper);
+    border-radius: 4px;
+    margin-bottom: 40px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .brand-logo {
+    height: 36px;
+    width: auto;
+    display: block;
+  }
+
+  .brand-text {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-paper);
+    opacity: 0.85;
+  }
+
+  .header-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    color: var(--color-paper);
+  }
+
+  .header-title em {
+    font-style: italic;
+    color: var(--color-ball);
+    font-weight: 500;
+  }
+
+  /* Status bar */
+  .status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--color-paper-deeper);
+  }
+
+  .status-left {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    background: var(--color-paper-deep);
+    border-radius: 999px;
+    font-size: 13px;
+    color: var(--color-ink-soft);
+    font-weight: 500;
+  }
+
+  .pill-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-ash);
+  }
+
+  .pill.live .pill-dot {
+    background: var(--color-ball);
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.6; transform: scale(1.3); }
+  }
+
+  .update-time {
+    font-size: 12px;
+    color: var(--color-ash);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* === Sección título === */
+  .section-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 28px;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+    margin-bottom: 20px;
+  }
+
+  .section-title em {
+    font-style: italic;
+    color: var(--color-court);
+    font-weight: 500;
+  }
+
+  /* === Clasificación === */
+  .ranking {
+    background: var(--color-paper-deep);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 56px;
+  }
+
+  .ranking-header {
+    display: grid;
+    grid-template-columns: 60px 1fr 80px 80px 80px 90px;
+    padding: 16px 24px;
+    background: var(--color-court);
+    color: var(--color-paper);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .ranking-row {
+    display: grid;
+    grid-template-columns: 60px 1fr 80px 80px 80px 90px;
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--color-paper-deeper);
+    align-items: center;
+    transition: background 120ms ease;
+  }
+
+  .ranking-row:last-child { border-bottom: none; }
+
+  .ranking-row:hover {
+    background: var(--color-paper-deeper);
+  }
+
+  .ranking-row.leader {
+    background: var(--color-ball);
+    color: var(--color-ink);
+  }
+
+  .ranking-row.leader:hover {
+    background: var(--color-ball);
+    filter: brightness(0.97);
+  }
+
+  .ranking-pos {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--color-ink);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ranking-row.leader .ranking-pos {
+    color: var(--color-ink);
+  }
+
+  .ranking-name {
+    font-weight: 500;
+    font-size: 16px;
+  }
+
+  .ranking-cell {
+    font-variant-numeric: tabular-nums;
+    font-size: 14px;
+    color: var(--color-ink-soft);
+  }
+
+  .ranking-row.leader .ranking-cell {
+    color: var(--color-ink);
+  }
+
+  .ranking-total {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 20px;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    color: var(--color-court);
+  }
+
+  .ranking-row.leader .ranking-total {
+    color: var(--color-ink);
+  }
+
+  .ranking-row .detail { display: none; }
+
+  /* === Cards (próximos partidos / últimos resultados) === */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 56px;
+  }
+
+  .card {
+    background: var(--color-paper-light);
+    border-radius: 4px;
+    padding: 24px;
+  }
+
+  .card-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-court);
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--color-paper-deeper);
+  }
+
+  .match-row {
+    display: grid;
+    grid-template-columns: 1fr 80px 1fr;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--color-paper-deep);
+    font-size: 14px;
+  }
+
+  .match-row:last-child { border-bottom: none; }
+
+  .match-team-local {
+    text-align: right;
+    font-weight: 500;
+  }
+
+  .match-team-visit {
+    font-weight: 500;
+  }
+
+  .match-score {
+    text-align: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-ink);
+    font-size: 15px;
+  }
+
+  .match-score.pending {
+    color: var(--color-ash);
+    font-weight: 400;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* === Stats === */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 56px;
+  }
+
+  .stat-card {
+    background: var(--color-paper-light);
+    padding: 20px 24px;
+    border-radius: 4px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-ash);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .stat-value {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 32px;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stat-meta {
+    font-size: 12px;
+    color: var(--color-ash);
+    margin-top: 4px;
+  }
+
+  /* === Loading / Error states === */
+  .loading {
+    text-align: center;
+    padding: 60px;
+    color: var(--color-ash);
+  }
+
+  .error-box {
+    background: var(--color-paper-deep);
+    border-left: 3px solid var(--color-error);
+    padding: 16px 20px;
+    border-radius: 2px;
+    margin-bottom: 32px;
+  }
+
+  .error-box strong { color: var(--color-error); }
+  .error-box p { font-size: 14px; color: var(--color-ink-soft); margin-top: 4px; }
+
+  /* === Demo banner === */
+  .demo-banner {
+    background: var(--color-ink);
+    color: var(--color-paper);
+    padding: 12px 24px;
+    border-radius: 4px;
+    font-size: 13px;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .demo-banner strong { color: var(--color-ball); font-weight: 600; }
+
+  /* === Footer === */
+  footer {
+    margin-top: 80px;
+    padding-top: 32px;
+    border-top: 1px solid var(--color-paper-deeper);
+    font-size: 12px;
+    color: var(--color-ash);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* === Responsive === */
+  @media (max-width: 768px) {
+    .page { padding: 20px 16px; }
+    header { padding: 20px 20px; flex-direction: column; gap: 16px; align-items: flex-start; }
+    .header-title { font-size: 18px; }
+    .ranking-header { display: none; }
+    .ranking-row {
+      grid-template-columns: 50px 1fr 90px;
+      grid-template-areas: 'pos name total' 'pos detail detail';
+      padding: 14px 16px;
+      gap: 4px;
+    }
+    .ranking-pos { grid-area: pos; align-self: start; }
+    .ranking-name { grid-area: name; }
+    .ranking-total { grid-area: total; }
+    .ranking-row .ranking-cell:not(.detail) { display: none; }
+    .ranking-row .detail {
+      display: block;
+      grid-area: detail;
+      font-size: 12px;
+      color: var(--color-ash);
+      grid-column: 2 / 4;
+    }
+    .grid-2 { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header>
+    <div class="brand">
+      <img src="ptg_logo.png" alt="Padel Team Gourmet" class="brand-logo">
+      <span class="brand-text">Padel Team Gourmet</span>
+    </div>
+    <h1 class="header-title">Porra Mundial <em>2026</em></h1>
+  </header>
+
+  <!-- Demo banner: quitar cuando esté conectado a Sheets real -->
+  <div class="demo-banner" id="demo-banner">
+    <span><strong>DEMO</strong> · datos de muestra. Conecta el Sheets publicado en CONFIG.SHEET_CSV_URL para activar datos reales.</span>
+  </div>
+
+  <div class="status-bar">
+    <div class="status-left">
+      <span class="pill" id="phase-pill">
+        <span class="pill-dot"></span>
+        <span id="phase-text">Fase de grupos</span>
+      </span>
+      <span class="pill" id="matches-pill">
+        <span id="matches-text">0 / 104 partidos</span>
+      </span>
+    </div>
+    <span class="update-time" id="update-time">—</span>
+  </div>
+
+  <!-- Stats -->
+  <section class="stats-grid" id="stats">
+    <div class="stat-card">
+      <div class="stat-label">Líder</div>
+      <div class="stat-value" id="stat-leader">—</div>
+      <div class="stat-meta" id="stat-leader-pts">— pts</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Diferencia con 2º</div>
+      <div class="stat-value" id="stat-gap">—</div>
+      <div class="stat-meta">puntos</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Participantes</div>
+      <div class="stat-value" id="stat-players">—</div>
+      <div class="stat-meta">jugadores</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Partidos jugados</div>
+      <div class="stat-value" id="stat-matches">—</div>
+      <div class="stat-meta" id="stat-matches-pct">— %</div>
+    </div>
+  </section>
+
+  <!-- Ranking -->
+  <h2 class="section-title"><em>Clasificación</em> general</h2>
+  <section class="ranking" id="ranking">
+    <div class="ranking-header">
+      <div>#</div>
+      <div>Jugador</div>
+      <div>Grupos</div>
+      <div>Eliminat.</div>
+      <div>Apuestas</div>
+      <div style="text-align:right">Total</div>
+    </div>
+    <div id="ranking-body">
+      <div class="loading">Cargando...</div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <span>Porra Mundial 2026 · Padel Team Gourmet</span>
+  <span id="last-update">—</span>
+</footer>
+
+<script>
+  // ===========================================================
+  // CONFIGURACIÓN
+  // ===========================================================
+  // Para conectar a datos reales:
+  // 1) Publica la hoja "Clasificación" del Sheets maestro como CSV
+  //    Archivo → Compartir → Publicar en web → Hoja "Clasificación" → CSV → Publicar
+  // 2) Pega la URL aquí abajo y elimina USE_DEMO_DATA o ponlo a false
+  const CONFIG = {
+    SHEET_CSV_URL: '',  // https://docs.google.com/spreadsheets/d/e/2PACX-1vSlPmwvAXVmx6-9qLlk93Sm_CzifQuIIvaJQSOmpXVixUfI_je3wbtlRzD7BHcYl5k5WOOzhylBZCob/pub?gid=1984444339&single=true&output=csv
+    USE_DEMO_DATA: false,
+    REFRESH_INTERVAL_MS: 60_000,  // refresca cada minuto
+  };
+
+  // ===========================================================
+  // DATOS DEMO (para que se vea cómo queda sin datos reales aún)
+  // ===========================================================
+  const DEMO_DATA = {
+    players: [
+      { pos: 1, name: 'Javier',    grupos: 178, oct: 30, cua: 14, q4:0, q3:0, sub:0, camp:0, mvp:0, pichM:0, pichE:0, total: 222 },
+      { pos: 2, name: 'Marcos',    grupos: 165, oct: 25, cua: 7,  q4:0, q3:0, sub:0, camp:0, mvp:0, pichM:0, pichE:0, total: 197 },
+      { pos: 3, name: 'Cristina',  grupos: 160, oct: 30, cua: 0,  q4:0, q3:0, sub:0, camp:0, mvp:0, pichM:0, pichE:0, total: 190 },
+      { pos: 4, name: 'Pablo',     grupos: 154, oct: 25, cua: 7,  q4:0, q3:0, sub:0, camp:0, mvp:0, pichM:0, pichE:0, total: 186 },
+      { pos: 5, name: 'Alejandro', grupos: 148, oct: 20, cua: 14, q4:0, q3:0, sub:0, camp:0, mvp:0, pichM:0, pichE:0, total: 182 },
+      { pos: 6, name: 'Lucía',     grupos: 152, oct: 25, cua: 0,  q4:0, q3:0, sub:0, camp:0, mvp:0, pichM:0, pichE:0, total: 177 },
+      { pos: 7, name: 'Diego',     grupos: 140, oct: 20, cua: 7,  q4:0, q3:0, sub:0, camp:0, mvp:0, pichM:0, pichE:0, total: 167 },
+      { pos: 8, name: 'Sofía',     grupos: 135, oct: 15, cua: 7,  q4:0, q3:0, sub:0, camp:0, mvp:0, pichM:0, pichE:0, total: 157 },
+    ],
+    matchesPlayed: 96,
+    matchesTotal: 104,
+    phase: 'Octavos de final',
+  };
+
+  // ===========================================================
+  // RENDER
+  // ===========================================================
+  function fmt(n) { return n.toLocaleString('es-ES'); }
+
+  function renderRanking(players) {
+    const body = document.getElementById('ranking-body');
+    if (!players || players.length === 0) {
+      body.innerHTML = '<div class="loading">Sin datos aún</div>';
+      return;
+    }
+
+    // Pop ball: SOLO al líder (DS regla: un pop por pantalla).
+    // En desktop ya destacamos al líder en la fila. No metemos otro ball en otro sitio.
+    const maxTotal = Math.max(...players.map(p => p.total));
+
+    body.innerHTML = players.map(p => {
+      const isLeader = p.total === maxTotal && p.total > 0;
+      const elim = p.oct + p.cua + p.q4 + p.q3 + p.sub + p.camp;
+      const apu = p.mvp + p.pichM + p.pichE;
+      return `
+        <div class="ranking-row ${isLeader ? 'leader' : ''}">
+          <div class="ranking-pos">${p.pos}</div>
+          <div class="ranking-name">${escapeHtml(p.name)}</div>
+          <div class="ranking-cell">${fmt(p.grupos)}</div>
+          <div class="ranking-cell">${fmt(elim)}</div>
+          <div class="ranking-cell">${fmt(apu)}</div>
+          <div class="ranking-total">${fmt(p.total)}</div>
+          <div class="ranking-cell detail">Grupos ${fmt(p.grupos)} · Elim. ${fmt(elim)} · Apu. ${fmt(apu)}</div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderStats(players, matchesPlayed, matchesTotal) {
+    if (!players || players.length === 0) return;
+
+    const sorted = [...players].sort((a, b) => b.total - a.total);
+    const leader = sorted[0];
+    const second = sorted[1] || { total: 0 };
+    const gap = leader.total - second.total;
+
+    document.getElementById('stat-leader').textContent = leader.name;
+    document.getElementById('stat-leader-pts').textContent = `${fmt(leader.total)} pts`;
+    document.getElementById('stat-gap').textContent = '+' + fmt(gap);
+    document.getElementById('stat-players').textContent = players.length;
+    document.getElementById('stat-matches').textContent = `${matchesPlayed}/${matchesTotal}`;
+    document.getElementById('stat-matches-pct').textContent =
+      ((matchesPlayed / matchesTotal) * 100).toFixed(0) + ' %';
+
+    document.getElementById('matches-text').textContent =
+      `${matchesPlayed} / ${matchesTotal} partidos`;
+  }
+
+  function renderPhase(phase) {
+    document.getElementById('phase-text').textContent = phase || 'Sin empezar';
+  }
+
+  function renderUpdateTime() {
+    const now = new Date();
+    const fmt = now.toLocaleString('es-ES', {
+      day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit'
+    });
+    document.getElementById('update-time').textContent = 'Actualizado · ' + fmt;
+    document.getElementById('last-update').textContent = 'Última actualización: ' + fmt;
+  }
+
+  function escapeHtml(s) {
+    if (s == null) return '';
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  // ===========================================================
+  // CARGA DE DATOS (Sheets CSV)
+  // ===========================================================
+  function parseCSV(text) {
+    // CSV parser simple. Asume estructura de la hoja "Clasificación" del maestro:
+    // Fila 1: cabecera "CLASIFICACIÓN" merged
+    // Fila 4 (3 si Sheets ignora merges): headers (#, Jugador, Grupos, 16avos, Octavos, Cuartos, 4º, 3º, Subcamp, Campeón, MVP, Pich.M, Pich.E, TOTAL)
+    // Filas 5-14: jugadores
+    const rows = text.trim().split('\n').map(r => r.split(',').map(c => c.replace(/^"|"$/g, '').trim()));
+    const players = [];
+    for (const row of rows) {
+      // detectar filas de jugador: primer campo numérico o "-", segundo campo es nombre
+      const pos = row[0];
+      const name = row[1];
+      const total = parseInt(row[13]);
+      if (!name || isNaN(total)) continue;
+      if (name === 'Jugador' || name.startsWith('J') && /^J\d+$/.test(name) && total === 0) {
+        // Saltamos placeholders vacíos J1..J10 sin nombre real
+        if (total === 0) continue;
+      }
+      players.push({
+        pos: pos === '-' ? '-' : parseInt(pos),
+        name,
+        grupos: parseInt(row[2]) || 0,
+        sxv: parseInt(row[3]) || 0,
+        oct: parseInt(row[4]) || 0,
+        cua: parseInt(row[5]) || 0,
+        q4:  parseInt(row[6]) || 0,
+        q3:  parseInt(row[7]) || 0,
+        sub: parseInt(row[8]) || 0,
+        camp:parseInt(row[9]) || 0,
+        mvp: parseInt(row[10]) || 0,
+        pichM:parseInt(row[11]) || 0,
+        pichE:parseInt(row[12]) || 0,
+        total: total
+      });
+    }
+    return players;
+  }
+
+  async function loadFromSheets() {
+    try {
+      const resp = await fetch(CONFIG.SHEET_CSV_URL);
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      const text = await resp.text();
+      const players = parseCSV(text);
+      return { players, matchesPlayed: 0, matchesTotal: 104, phase: 'En curso' };
+    } catch (err) {
+      console.error('Error cargando Sheets:', err);
+      showError(`No se pudo cargar el Google Sheets (${err.message}). Comprueba que esté publicado como CSV y que la URL en CONFIG.SHEET_CSV_URL sea correcta.`);
+      return null;
+    }
+  }
+
+  function showError(msg) {
+    const banner = document.createElement('div');
+    banner.className = 'error-box';
+    banner.innerHTML = `<strong>Error cargando datos.</strong><p>${escapeHtml(msg)}</p>`;
+    document.querySelector('.page').insertBefore(banner, document.querySelector('.status-bar'));
+  }
+
+  async function update() {
+    let data;
+    if (CONFIG.USE_DEMO_DATA || !CONFIG.SHEET_CSV_URL) {
+      data = DEMO_DATA;
+      document.getElementById('demo-banner').style.display = 'flex';
+    } else {
+      document.getElementById('demo-banner').style.display = 'none';
+      data = await loadFromSheets();
+      if (!data) return;
+    }
+
+    renderRanking(data.players);
+    renderStats(data.players, data.matchesPlayed, data.matchesTotal);
+    renderPhase(data.phase);
+    renderUpdateTime();
+  }
+
+  // Arranque
+  update();
+
+  // Auto-refresh si hay datos reales
+  if (!CONFIG.USE_DEMO_DATA && CONFIG.SHEET_CSV_URL) {
+    setInterval(update, CONFIG.REFRESH_INTERVAL_MS);
+  }
+</script>
+
+</body>
+</html>
